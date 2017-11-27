@@ -19,7 +19,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
 
 manager = Manager(app)
-server = Server(host="0.0.0.0", port=8082, threaded=True)
+server = Server(host="0.0.0.0", port=80, threaded=True)
 manager.add_command("runserver", server)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
