@@ -1,4 +1,5 @@
 # example2 webrobot
+# 注意：建议使用Anconda建立Python 3.5.x的Pytnon的虚拟环境，然后在该环境中安装运行以下程序，这样可以避免版本更新造成的各类问题。
 一、启动服务器前准备<br>
 　１、导入库。本程序应用到的Python导入库有：<br>
 　　　　flask<br>
