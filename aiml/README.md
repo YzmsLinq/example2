@@ -1,2 +1,1 @@
-# Py3Aiml3ForChinese
-Aiml (Python3版) 对中文的支持不好,  在这里做一些调整以支持中文. 持续更新中
+相对于experience项目中的aiml库已经更新，使其能适应Python 3.8以上的版本

@@ -1,10 +1,9 @@
 from flask import Flask, render_template
-from flask_script import Server, Manager
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
-from wtforms.validators import Required
+from wtforms.validators import DataRequired
 
 import sys
 sys.path.insert(0, "../")
@@ -18,9 +17,6 @@ k.respond("start")
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
 
-manager = Manager(app)
-server = Server(host="0.0.0.0", port=80, threaded=True)
-manager.add_command("runserver", server)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 
@@ -38,4 +34,4 @@ def index():
     return render_template('index.html', form=form, name=k.respond(name))
 
 if __name__ == '__main__':
-    manager.run()
+    app.run(host='0.0.0.0',port=8089)

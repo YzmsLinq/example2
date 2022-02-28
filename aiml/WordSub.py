@@ -8,29 +8,35 @@ Use this class like a dictionary to add before/after pairs:
     > subber["before"] = "after"
     > subber["begin"] = "end"
 Use the sub() method to perform the substitution:
-    > print subber.sub("before we begin")
+    > print( subber.sub("before we begin") )
     after we end
 All matching is intelligently case-insensitive:
-    > print subber.sub("Before we BEGIN")
+    > print( subber.sub("Before we BEGIN") )
     After we END
 The 'before' words must be complete words -- no prefixes.
 The following example illustrates this point:
     > subber["he"] = "she"
-    > print subber.sub("he says he'd like to help her")
+    > print( subber.sub("he says he'd like to help her") )
     she says she'd like to help her
 Note that "he" and "he'd" were replaced, but "help" and "her" were
 not.
 """
 
+from __future__ import print_function
+
+
 # 'dict' objects weren't available to subclass from until version 2.2.
 # Get around this by importing UserDict.UserDict if the built-in dict
 # object isn't available.
 try: dict
-except: from UserDict import UserDict as dict  # @UnresolvedImport
+except: from UserDict import UserDict as dict
 
-import configparser  # @UnusedImport
 import re
 import string
+try:
+    from ConfigParser import ConfigParser
+except ImportError:
+    from configparser import ConfigParser
 
 class WordSub(dict):
     """All-in-one multiple-string-substitution class."""
@@ -47,7 +53,7 @@ class WordSub(dict):
         dictionary.
 
         """
-        self._regex = re.compile("|".join(map(self._wordToRegex, list(self.keys()))))
+        self._regex = re.compile("|".join(map(self._wordToRegex, self.keys())))
         self._regexIsDirty = False
 
     def __init__(self, defaults = {}):
@@ -57,7 +63,7 @@ class WordSub(dict):
         """
         self._regex = None
         self._regexIsDirty = True
-        for k,v in list(defaults.items()):
+        for k,v in defaults.items():
             self[k] = v
 
     def __call__(self, match):
@@ -77,22 +83,3 @@ class WordSub(dict):
             self._update_regex()
         return self._regex.sub(self, text)
 
-# self-test
-if __name__ == "__main__":
-    subber = WordSub()
-    subber["apple"] = "banana"
-    subber["orange"] = "pear"
-    subber["banana" ] = "apple"
-    subber["he"] = "she"
-    subber["I'd"] = "I would"
-
-    # test case insensitivity
-    inStr =  "I'd like one apple, one Orange and one BANANA."
-    outStr = "I Would like one banana, one Pear and one APPLE."
-    if subber.sub(inStr) == outStr: print("Test #1 PASSED")    
-    else: print("Test #1 FAILED: '%s'" % subber.sub(inStr))
-
-    inStr = "He said he'd like to go with me"
-    outStr = "She said she'd like to go with me"
-    if subber.sub(inStr) == outStr: print("Test #2 PASSED")    
-    else: print("Test #2 FAILED: '%s'" % subber.sub(inStr))
